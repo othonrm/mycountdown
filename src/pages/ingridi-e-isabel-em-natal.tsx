@@ -93,29 +93,30 @@ export default function Countdown() {
         return;
       }
 
-      // Or for sharing, if using the Web Share API
-      if (navigator.share) {
-        try {
-          // Remove line breaks from the display name
-          const displayNameSingleLine = countdown.displayName.replace(
-            /\n/g,
-            " "
-          );
+      const response = await fetch(image);
+      const blob = await response.blob();
 
+      // Create a file object for the Instagram share intent
+      const file = new File([blob], "screenshot.png", { type: "image/png" });
+
+      // Remove line breaks from the display name
+      const displayNameSingleLine = countdown.displayName.replace(/\n/g, " ");
+
+      try {
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({
             title: `Minha contagem regressiva para ${displayNameSingleLine}`,
             text: `Faltam ${timeLeftDisplay} \n Venha conferir e fazer a sua ${window.location.href}`,
-            files: [
-              new File(
-                [await fetch(image).then((res) => res.blob())],
-                "screenshot.png",
-                { type: "image/png" }
-              ),
-            ],
+            files: [file],
           });
-        } catch (error) {
-          console.error("Error sharing:", error);
+        } else {
+          const instagramUrl = `instagram://story-camera?backgroundImage=${encodeURIComponent(
+            image
+          )}`;
+          window.location.href = instagramUrl;
         }
+      } catch (error) {
+        console.error("Error sharing:", error);
       }
     }
   };
