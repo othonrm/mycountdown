@@ -91,7 +91,7 @@ export default function Home() {
 
           await navigator.share({
             title: `Minha contagem regressiva para ${displayNameSingleLine}`,
-            text: `Faltam ${timeLeftDisplay} \n Venha conferir a sua em https://countdowns.vercel.app`,
+            text: `Faltam ${timeLeftDisplay} \n Venha conferir e fazer a sua ${window.location.href}`,
             files: [
               new File(
                 [await fetch(image).then((res) => res.blob())],
@@ -103,8 +103,6 @@ export default function Home() {
         } catch (error) {
           console.error("Error sharing:", error);
         }
-      } else {
-        alert("Web Share API is not supported in your browser.");
       }
     }
   };
