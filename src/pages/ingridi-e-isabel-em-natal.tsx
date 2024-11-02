@@ -85,11 +85,13 @@ export default function Countdown() {
         (el as HTMLElement).style.display = "";
       });
 
-      // Optionally, trigger download
-      const link = document.createElement("a");
-      link.href = image;
-      link.download = "screenshot.png";
-      link.click();
+      // Only download on local
+      if (window.location.hostname === "localhost") {
+        const link = document.createElement("a");
+        link.href = image;
+        link.download = "screenshot.png";
+        link.click();
+      }
 
       // Or for sharing, if using the Web Share API
       if (navigator.share) {
