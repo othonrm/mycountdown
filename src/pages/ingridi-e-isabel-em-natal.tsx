@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import html2canvas from "html2canvas";
 
-export default function Home() {
+export default function Countdown() {
   const countdown = {
     displayName: "Viagem à Natal! \n 🛫🌴🏖️",
     datetime: "2024-11-28T08:00:00-03:00",
@@ -71,14 +71,25 @@ export default function Home() {
 
   const captureScreenshot = async () => {
     if (screenshotRef.current) {
-      const canvas = await html2canvas(screenshotRef.current);
+      const hiddenElements = document.querySelectorAll(".screenshot-hidden");
+      hiddenElements.forEach((el) => {
+        (el as HTMLElement).style.display = "none";
+      });
+
+      const canvas = await html2canvas(screenshotRef.current, {
+        scale: window.devicePixelRatio,
+      });
       const image = canvas.toDataURL("image/png");
 
+      hiddenElements.forEach((el) => {
+        (el as HTMLElement).style.display = "";
+      });
+
       // Optionally, trigger download
-      // const link = document.createElement("a");
-      // link.href = image;
-      // link.download = "screenshot.png";
-      // link.click();
+      const link = document.createElement("a");
+      link.href = image;
+      link.download = "screenshot.png";
+      link.click();
 
       // Or for sharing, if using the Web Share API
       if (navigator.share) {
@@ -148,7 +159,7 @@ export default function Home() {
 
           <div className="flex gap-4 items-center flex-col sm:flex-row">
             <button
-              className="hover:text-white rounded-full border border-solid border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
+              className="screenshot-hidden hover:text-white rounded-full border border-solid border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
               onClick={captureScreenshot}
             >
               Compartilhar no Instagram
@@ -157,7 +168,7 @@ export default function Home() {
         </main>
         <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-white/70 text-foreground gap-2 hover:bg-white text-xs sm:text-sm h-8 sm:h-10 px-4 sm:px-5"
+            className="screenshot-hidden rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-white/70 text-foreground gap-2 hover:bg-white text-xs sm:text-sm h-8 sm:h-10 px-4 sm:px-5"
             href="/new"
             target="_blank"
             rel="noopener noreferrer"
