@@ -91,6 +91,7 @@ export default function Countdown() {
         link.href = image;
         link.download = "screenshot.png";
         link.click();
+        return;
       }
 
       // Or for sharing, if using the Web Share API
@@ -121,16 +122,16 @@ export default function Countdown() {
   };
 
   return (
-    <div className="relative" ref={screenshotRef}>
-      <Image
-        className="absolute h-full w-full object-cover z-[-1]"
-        src={countdown.backgroundImage}
-        alt="background image"
-        width={1920}
-        height={1080}
-        priority
-        quality={50}
-      />
+    <div
+      className="relative"
+      style={{
+        backgroundImage: `url(${countdown.backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+      ref={screenshotRef}
+    >
       <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 text-gray-800">
         <main className="bg-white bg-opacity-60 rounded-md shadow-lg p-6 relative flex flex-col gap-8 row-start-2 items-center text-center max-w-screen-sm">
           <h1 className="text-4xl sm:text-5xl font-bold text-center">Faltam</h1>
